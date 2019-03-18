@@ -25,33 +25,41 @@ public class UPIDF extends Command {
   // Called just before this Command runs the first time
   @Override
     protected void initialize() {
-        RobotMap.climbingMechLeadTalon.config_kP(0, 0.25, 0);
+        RobotMap.climbingMechLeadTalon.config_kP(0, 0.025, 0);
 	    RobotMap.climbingMechLeadTalon.config_kI(0, 0.00025, 0);
-	    RobotMap.climbingMechLeadTalon.config_kD(0, 250, 0);
+	    RobotMap.climbingMechLeadTalon.config_kD(0, 0.000025, 0);
         RobotMap.climbingMechLeadTalon.config_kF(0, 0.074066, 0);
-    
- 
+
+        startTime = Timer.getFPGATimestamp();
+        RobotMap.climbingMechLeadTalon.configNominalOutputForward(0.5);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    startTime = Timer.getFPGATimestamp();
-    RobotMap.climbingMechLeadTalon.configNominalOutputForward(0.5);
+//set direction of motor
 }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    if (Timer.getFPGATimestamp() - (startTime) >= 2){
+      
+        return true;
+    }
+   
+    else{
+
+        return false;
+    }
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    if (Timer.getFPGATimestamp() == 2){
+ 
         RobotMap.climbingMechLeadTalon.set(ControlMode.PercentOutput, 0);
-    }
+    
   }
 
   // Called when another command which requires one or more of the same
