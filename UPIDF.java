@@ -1,0 +1,69 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
+package frc.robot.autonomouscommands;
+
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
+import frc.robot.tools.PID;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.MotControllerJNI;
+import edu.wpi.first.wpilibj.Timer;
+
+
+public class UPIDF extends Command {
+    double startTime;
+
+  public UPIDF() {
+motion profile stops automatically at end of profile
+desiredspeed=top speed
+f term = how much press pedal
+pid = tells deviation
+judge by time not speed
+half rpm/maximum speed
+= 4685
+  }
+
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
+    RobotMap.climbingMechLeadTalon.config_kP(0, 0.25, 0);
+	RobotMap.climbingMechLeadTalon.config_kI(0, 0.00025, 0);
+	RobotMap.climbingMechLeadTalon.config_kD(0, 250, 0);
+    RobotMap.climbingMechLeadTalon.config_kF(0, 0.074066, 0);
+    
+ 
+  }
+
+  // Called repeatedly when this Command is scheduled to run
+  @Override
+  protected void execute() {
+    startTime = Timer.getFPGATimestamp();
+    RobotMap.climbingMechLeadTalon.configNominalOutputForward(0.5);
+}
+
+  // Make this return true when this Command no longer needs to run execute()
+  @Override
+  protected boolean isFinished() {
+    return false;
+  }
+
+  // Called once after isFinished returns true
+  @Override
+  protected void end() {
+    if (Timer.getFPGATimestamp() == 2){
+        RobotMap.climbingMechLeadTalon.set(ControlMode.PercentOutput, 0);
+    }
+  }
+
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
+  @Override
+  protected void interrupted() {
+  }
+}
