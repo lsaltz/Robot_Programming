@@ -19,23 +19,16 @@ import edu.wpi.first.wpilibj.Timer;
 public class UPIDF extends Command {
     double startTime;
 
-  public UPIDF() {
-motion profile stops automatically at end of profile
-desiredspeed=top speed
-f term = how much press pedal
-pid = tells deviation
-judge by time not speed
-half rpm/maximum speed
-= 4685
+    public UPIDF() {
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
-    RobotMap.climbingMechLeadTalon.config_kP(0, 0.25, 0);
-	RobotMap.climbingMechLeadTalon.config_kI(0, 0.00025, 0);
-	RobotMap.climbingMechLeadTalon.config_kD(0, 250, 0);
-    RobotMap.climbingMechLeadTalon.config_kF(0, 0.074066, 0);
+    protected void initialize() {
+        RobotMap.climbingMechLeadTalon.config_kP(0, 0.25, 0);
+	    RobotMap.climbingMechLeadTalon.config_kI(0, 0.00025, 0);
+	    RobotMap.climbingMechLeadTalon.config_kD(0, 250, 0);
+        RobotMap.climbingMechLeadTalon.config_kF(0, 0.074066, 0);
     
  
   }
