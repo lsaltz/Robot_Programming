@@ -64,11 +64,14 @@ public class AutoButton extends Command {
   protected boolean isFinished() {
 
     if (startDistance == 0 && startAngle == 0){
+     
       return true;
+    
     }
 
 
    else return false;
+  
   }
 
  
