@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package org.usfirst.frc.team4499.robot;
+
 import org.usfirst.frc.team4499.robot.commands.BothSides;
 import org.usfirst.frc.team4499.robot.RobotMap;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -26,10 +27,10 @@ import org.usfirst.frc.team4499.robot.subsystems.CatapultSubsystem;
 import org.usfirst.frc.team4499.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4499.robot.subsystems.IntakeSubsystem;
 import org.usfirst.frc.team4499.robot.RobotMap;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class Robot extends TimedRobot {
+	
 	public static IntakeSubsystem subsystem = new IntakeSubsystem();
 	public static CatapultSubsystem catapultSubsystem = new CatapultSubsystem();
 	public static OI m_oi;
@@ -40,6 +41,7 @@ public class Robot extends TimedRobot {
 	private Shifters shifter;
 	private Intake intake;
 	private BothSides both;
+	
 	double supplyVoltage = 4.53;
 	
 	Command m_autonomousCommand;
@@ -48,11 +50,13 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void robotInit() {
+	
 		m_oi = new OI();
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		config = new RobotConfig();
 		config.setup();
 		SmartDashboard.putData("Auto mode", m_chooser);
+	
 	}
 
 	@Override
@@ -62,30 +66,39 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
-	}
 
+		Scheduler.getInstance().run();
+
+	}
 
 	@Override
 	public void autonomousInit() {
+
 		m_autonomousCommand = m_chooser.getSelected();
 		both = new BothSides();
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
-		}
-		both = new BothSides();
-	}
 
+		if (m_autonomousCommand != null) {
+
+			m_autonomousCommand.start();
+
+		}
+
+		both = new BothSides();
+
+	}
 
 	@Override
 	public void autonomousPeriodic() {
+
 		both.start();
 		Scheduler.getInstance().run();
 		both.start();
+
 	}
 
 	@Override
 	public void teleopInit() {
+
 		Set_Piston piston1 = new Set_Piston(RobotMap.catapultRelease, RobotMap.releaseClosed);
 		piston1.start();
 		Set_Piston piston2 = new Set_Piston(RobotMap.catapult, RobotMap.catapultSet);
@@ -97,37 +110,32 @@ public class Robot extends TimedRobot {
 		waver.start();
 		shifter = new Shifters();
 		shifter.start();
+
 		if (m_autonomousCommand != null) {
+
 			m_autonomousCommand.cancel();
+
 		}
 	}
 
 
 	@Override
 	public void teleopPeriodic() {
-/*		if (OI.catapultUp.get()) {
-			RobotMap.catapult.set(RobotMap.catapultSet);
-			System.out.println("test");
-		}
-		if (OI.catapultDown.get()) {
-			RobotMap.catapult.set(RobotMap.catapultResting);
-		}
-		if (OI.releaseOpen.get()) {
-			RobotMap.catapultRelease.set(RobotMap.releaseOpen);
-		}
-		if (OI.releaseClosed.get()) {
-			RobotMap.catapultRelease.set(RobotMap.releaseClosed);
-		}
-		*/
+
 		System.out.println((250*(RobotMap.pressureSensor.getAverageVoltage())/supplyVoltage)-25);
 	
 	if (OI.fireButton.get()) {
-			fire.start();
+
+		fire.start();
+
 		}
-		Scheduler.getInstance().run();
+
+	Scheduler.getInstance().run();
+
 	}
 
 	@Override
 	public void testPeriodic() {
+	
 	}
 }

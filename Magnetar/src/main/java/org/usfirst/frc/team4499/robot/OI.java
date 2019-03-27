@@ -18,7 +18,10 @@ public class OI {
 	public static JoystickButton leftshiftButton =new JoystickButton (controllerZero,5);
 	public static JoystickButton waverUpButton =new JoystickButton (controllerZero,4);
 	public static JoystickButton waverDownButton = new JoystickButton(controllerZero, 1);
-	}
+	double leftJoystickVal = controllerZero.getRawAxis(1);
+	double rightJoystickVal = controllerZero.getRawAxis(5);
+	
+}
 
 
 

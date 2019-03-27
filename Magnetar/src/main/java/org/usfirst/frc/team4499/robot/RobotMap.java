@@ -9,12 +9,10 @@ package org.usfirst.frc.team4499.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-
 import edu.wpi.first.wpilibj.I2C.Port;
 
 public class RobotMap {
@@ -48,4 +46,5 @@ public class RobotMap {
 	public static TalonSRX rightFollowerTalon = new TalonSRX(rightFollowerTalonID);// green encoder
 	public static TalonSRX intakeMotor = new TalonSRX(intakeMotorID);
 	public static TalonSRX pincher = new TalonSRX(pincherTalonID);
+
 }
