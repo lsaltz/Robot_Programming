@@ -7,6 +7,7 @@ import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.sensors.VisionCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.hal.util.UncleanStatusException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -26,7 +27,6 @@ public class AutoButton extends Command {
 
   VisionCamera jevois = new VisionCamera(Robot.jevois1);
   private double startAngle = jevois.angle;
-  private double startDistance = jevois.distance;
   private String json = jevois.sanatizedString;
 
   public AutoButton() {
@@ -46,45 +46,33 @@ public class AutoButton extends Command {
   @Override
   protected void execute() {
   
-    if (OI.autoButton.get()){
-
       if (startAngle != 0){
 
         orientation.updatePID(startAngle);
         RobotMap.leftDriveLead.set(ControlMode.PercentOutput, -forwardSpeed - orientation.getResult());
         RobotMap.rightDriveLead.set(ControlMode.PercentOutput, -forwardSpeed + orientation.getResult());
         
-        if (startDistance != 0){
-          RobotMap.leftDriveLead.set(ControlMode.PercentOutput, forwardSpeed);
-          RobotMap.rightDriveLead.set(ControlMode.PercentOutput, forwardSpeed);
-
-          if (startDistance == -11 || startAngle == -100 || json.isBlank()){
+          if (startAngle == -100 || json.isBlank() || startAngle == 0){
             RobotMap.leftDriveLead.set(ControlMode.PercentOutput, forwardSpeed);
             RobotMap.rightDriveLead.set(ControlMode.PercentOutput, forwardSpeed);
-          }
+          
         }
       }
-   
     }
-  
-  }
-
 
   @Override
   protected boolean isFinished() {
 
-    if (startDistance == 0 && startAngle == 0){
+    if (startAngle == 0){
      
       return true;
     
     }
 
-
    else return false;
   
   }
 
- 
   @Override
   protected void end() {
 
@@ -92,7 +80,6 @@ public class AutoButton extends Command {
 		RobotMap.rightDriveLead.set(ControlMode.PercentOutput, 0);
 
   }
-
 
   @Override
   protected void interrupted() {
