@@ -8,11 +8,14 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotMap;
 import edu.wpi.first.hal.util.UncleanStatusException;
 
+
+
+
 public class VisionCamera {
    
    JSONParser parser = new JSONParser();
    SerialPort port;
-   private String sanatizedString = "nothing";
+   public String sanatizedString = "nothing";
    public double lastParseTime;
    public double distance;
    public double angle;
@@ -23,13 +26,14 @@ public class VisionCamera {
        port = jevois;
     }
    
-   public void updateVision(){
+    public void updateVision(){
+
       try{
          String jsonString = this.getString();
 
-       if (jsonString != null){
-         double tryDistance = parseDistance(jsonString);
-         double tryAngle = parseAngle(jsonString);
+         if (jsonString != null){
+            double tryDistance = parseDistance(jsonString);
+            double tryAngle = parseAngle(jsonString);
    
          if (tryDistance != badDistance && tryAngle != badAngle){
             distance = tryDistance;
@@ -38,86 +42,86 @@ public class VisionCamera {
             lastParseTime = Timer.getFPGATimestamp();
          }
       }
-   }
+      }
    catch (Exception e){
    }
 }
-   public double parseAngle(String jsonString){
+    public double parseAngle(String jsonString){
  
       try{
-         Object object = parser.parse(jsonString);
+
+         Object object = parser.parse(jsonString);   
          JSONObject jsonObject = (JSONObject) object;
-                        
+               
          if (jsonObject != null){
             double distString = (double) jsonObject.get("Angle");
-                  
-            return Double.valueOf(distString);            
-               }
-            } 
    
-         catch(ParseException e) {
+               return Double.valueOf(distString);
+            }  
          } 
-         catch(UncleanStatusException e) {
+         
+      catch(ParseException e) {
          } 
-         catch(ClassCastException e) {
+      catch(UncleanStatusException e) {
+         } 
+      catch(ClassCastException e) {
          }
-              
-         return badAngle;
+               
+      return badAngle;
     }
  
     public double parseDistance(String jsonString){
-    
+       
        try{
 
          Object object = parser.parse(jsonString);
          JSONObject jsonObject = (JSONObject) object;
 
          if (jsonObject != null){ 
-            double distString = (double) jsonObject.get("Distance");
-             
-            return (Double.valueOf(distString))/12;
 
-             }         
-        } 
-      catch(ParseException e) {
+            double distString = (double) jsonObject.get("Distance");
+            
+            return (Double.valueOf(distString))/12;
+         }
        } 
-      catch(UncleanStatusException e) {
+       
+       catch(ParseException e) {
        } 
-      catch(ClassCastException e) {       
+       catch(UncleanStatusException e) {
+       } 
+       catch(ClassCastException e) {      
          }
  
-         return badDistance; 
+       return badDistance; 
       } 
     
     public double getDistance(){
-  
+       
       return distance;
     }
   
     public double getAngle(){
-  
+      
       return angle;
    }
 
-   public String getString(){
+    public String getString(){
       try {     
-         // System.out.println("Raw Read: "+port.readString());
-         // System.out.println("Bytes Available: "+port.getBytesReceived());
+         
+         
          if(port.getBytesReceived()>2){
-            String unsanatizedString = port.readString();
-            //System.out.println("Raw Read: "+unsanatizedString);
             
+            String unsanatizedString = port.readString();
+              
             if(unsanatizedString.length()>5&&!unsanatizedString.isBlank()&&!unsanatizedString.isEmpty()){
+
                  sanatizedString = unsanatizedString;
               }
            }
         } 
       catch (Exception e) {
-         // System.out.println("Parse Failed");
-        }
-         //System.out.println(sanatizedString);
-         //System.out.println("Get String: " + sanatizedString);
-        
-         return sanatizedString;   
+         }
+       
+        return sanatizedString;   
     } 
 }
