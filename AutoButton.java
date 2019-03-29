@@ -1,5 +1,6 @@
 package frc.robot.autonomouscommands;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.robot.tools.PID;
@@ -27,6 +28,7 @@ public class AutoButton extends Command {
 
   VisionCamera jevois = new VisionCamera(Robot.jevois1);
   private double startAngle = jevois.angle;
+  private double endDistance = jevois.distance;
   private String json = jevois.sanatizedString;
 
   public AutoButton() {
@@ -45,8 +47,10 @@ public class AutoButton extends Command {
 
   @Override
   protected void execute() {
-  
-      if (startAngle != 0){
+
+    System.out.println(json);
+    
+    if (startAngle != 0){
 
           orientation.updatePID(startAngle);
           RobotMap.leftDriveLead.set(ControlMode.PercentOutput,  orientation.getResult());
@@ -54,7 +58,7 @@ public class AutoButton extends Command {
         
       }
          // if (startAngle == -100 || json.isBlank() || startAngle == 0){
-      else{
+    else{
 
         RobotMap.leftDriveLead.set(ControlMode.PercentOutput, forwardSpeed);
         RobotMap.rightDriveLead.set(ControlMode.PercentOutput, forwardSpeed);
@@ -64,15 +68,13 @@ public class AutoButton extends Command {
 
   @Override
   protected boolean isFinished() {
-
-    if (startAngle == 0){
-     
-      return true;
-   
+    if (endDistance == 0){
+    return true;
     }
 
-   return false;
-  
+    else{
+      return false;
+    }
   }
 
   @Override
