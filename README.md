@@ -1,5 +1,5 @@
 # Robot_Programming
-My FIRST contributions Summer of 2018-current time.
+My FIRST contributions Summer of 2018-May 2019.
 
 Magnetar was programmed in Java during the Summer of 2018. Gravastar is The Highlander's official 2019 season bot.
 
